@@ -5,38 +5,30 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 
 public class gui extends Application {
 	public void start(Stage stage) {
 		BorderPane root = new BorderPane();
-		TilePane tile = new TilePane();
-		tile.setMaxHeight(410);
-		tile.setMaxWidth(410);
+		GridPane tile = new GridPane();
 		tile.setVgap(5);
-		// root.setTileAlignment(Pos.CENTER);
 		tile.setHgap(5);
 		tile.setPadding(new Insets(5, 5, 5, 5));
-		tile.setStyle("-fx-background-color:#778899; -fx-opacity:1;");
-		tile.setPrefColumns(9);
-		tile.setPrefRows(9);
-		final int SIZE = 40;
-		for (int i = 1; i <= 9; i++) {
-			for (int k = 1; k <= 9; k++) {
-				Label label = new Label();
+		tile.setStyle("-fx-background-color:#606772; -fx-opacity:1;");
+		for (int i = 0; i <= 8; i++) {
+			for (int j = 0; j <= 8; j++) {
 				TextCell text = new TextCell();
-				label.setPrefSize(SIZE, SIZE);
-				if (i % 2 != 0 && k % 2 != 0 || i % 2 == 0 && k % 2 == 0) {
-					label.setStyle("-fx-background-color: #000000;");
-					text.setAlignment(Pos.CENTER);
-					text.setMaxSize(10, 10);
-					text.replaceSelection("H");
+				if (i / 3 != 1 && j / 3 != 1 || i / 3 == 1 && j / 3 == 1) {
+					text.setStyle("-fx-background-color: #ff9900;");
 				}
-				tile.getChildren().addAll(label, text);
+				text.setEditable(true);
+				text.setAlignment(Pos.CENTER);
+				text.setMaxSize(30, 30);
+				text.setOnKeyPressed(event -> text.setText(event.getText()));
+				tile.add(text, i, j);
 			}
 		}
 
@@ -44,7 +36,6 @@ public class gui extends Application {
 		buttons.setSpacing(5);
 		buttons.setPadding(new Insets(10, 10, 20, 10));
 		buttons.setStyle("-fx-background-color:#D3D3D3; -fx-opacity:1;");
-		//buttons.setAlignment(Pos.CENTER);
 		Button solve = new Button("Solve");
 		Button clear = new Button("Clear");
 		solve.setAlignment(Pos.CENTER);
@@ -52,9 +43,8 @@ public class gui extends Application {
 
 		root.setTop(tile);
 		root.setBottom(buttons);
-		root.setPrefSize(600, 600);
-		
-		Scene scene = new Scene(root, 410, 455);
+
+		Scene scene = new Scene(root, 310, 350);
 
 		stage.setResizable(false);
 		stage.setScene(scene);
