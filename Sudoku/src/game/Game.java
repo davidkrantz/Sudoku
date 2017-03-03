@@ -4,7 +4,7 @@ public class Game {
 	private int[][] board;
 	private boolean wrongInput;
 
-	/** Create the sudoku board. */
+	/** Create an empty sudoku board, which is defined as a filled board with -1. */
 	public Game() {
 		board = new int[9][9];
 		for (int i = 0; i < 9; i++) {

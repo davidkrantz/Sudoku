@@ -1,6 +1,8 @@
 package game;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,7 +13,11 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class gui extends Application {
+	private Game sudoku;
+	private Button solveButton, clearButton;
+
 	public void start(Stage stage) {
+		sudoku = new Game();
 		BorderPane root = new BorderPane();
 		GridPane tile = new GridPane();
 		tile.setVgap(5);
@@ -36,10 +42,20 @@ public class gui extends Application {
 		buttons.setSpacing(5);
 		buttons.setPadding(new Insets(10, 10, 20, 10));
 		buttons.setStyle("-fx-background-color:#D3D3D3; -fx-opacity:1;");
-		Button solve = new Button("Solve");
-		Button clear = new Button("Clear");
-		solve.setAlignment(Pos.CENTER);
-		buttons.getChildren().addAll(solve, clear);
+		solveButton = new Button("Solve");
+		clearButton = new Button("Clear");
+		solveButton.setAlignment(Pos.CENTER);
+		clearButton.setAlignment(Pos.CENTER);
+		solveButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				if (sudoku.solve(0, 0)) {
+					System.out.println("YES");
+				} else {
+					System.out.println("NO");
+				}
+			}
+		});
+		buttons.getChildren().addAll(solveButton, clearButton);
 
 		root.setTop(tile);
 		root.setBottom(buttons);
