@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -19,11 +20,11 @@ public class gui extends Application {
 	public void start(Stage stage) {
 		sudoku = new Game();
 		BorderPane root = new BorderPane();
-		GridPane tile = new GridPane();
-		tile.setVgap(5);
-		tile.setHgap(5);
-		tile.setPadding(new Insets(5, 5, 5, 5));
-		tile.setStyle("-fx-background-color:#606772; -fx-opacity:1;");
+		GridPane grid = new GridPane();
+		grid.setVgap(5);
+		grid.setHgap(5);
+		grid.setPadding(new Insets(5, 5, 5, 5));
+		grid.setStyle("-fx-background-color:#606772; -fx-opacity:1;");
 		for (int i = 0; i <= 8; i++) {
 			for (int j = 0; j <= 8; j++) {
 				TextCell text = new TextCell();
@@ -34,7 +35,7 @@ public class gui extends Application {
 				text.setAlignment(Pos.CENTER);
 				text.setMaxSize(30, 30);
 				text.setOnKeyPressed(event -> text.setText(event.getText()));
-				tile.add(text, i, j);
+				grid.add(text, i, j);
 			}
 		}
 
@@ -48,16 +49,52 @@ public class gui extends Application {
 		clearButton.setAlignment(Pos.CENTER);
 		solveButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
+				for (int i = 0; i < 9; i++) {
+					for (int j = 0; j < 9; j++) {
+						for (Node node : grid.getChildren()) {
+							Integer nodeRow = GridPane.getRowIndex(node);
+							if (i == (nodeRow == null ? 0 : nodeRow)) {
+								Integer nodeColumn = GridPane.getColumnIndex(node);
+								if (j == (nodeColumn == null ? 0 : nodeColumn)) {
+									TextCell text = (TextCell) node;
+									if (!text.getText().isEmpty()) {
+										int nbr = Integer.parseInt(text.getText());
+										sudoku.setNbr(i, j, nbr);
+									}
+								}
+							}
+						}
+					}
+				}
 				if (sudoku.solve(0, 0)) {
 					System.out.println("YES");
+					// for(int i = 0; i < 9; i++){
+					// for(int j = 0; j < 9; j++){
+					// for (Node node : grid.getChildren()) {
+					// Integer nodeRow = GridPane.getRowIndex(node);
+					// if (i == (nodeRow == null ? 0 : nodeRow)) {
+					// Integer nodeColumn = GridPane.getColumnIndex(node);
+					// if (j == (nodeColumn == null ? 0 : nodeColumn)) {
+					// TextCell text = (TextCell) node;
+					// text.replaceText(0, 1, sudoku.getString(i, j));
+					// }
+					// }
+					// }
+					// }
+					// }
 				} else {
 					System.out.println("NO");
 				}
 			}
 		});
+		clearButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				// code here
+			}
+		});
 		buttons.getChildren().addAll(solveButton, clearButton);
 
-		root.setTop(tile);
+		root.setTop(grid);
 		root.setBottom(buttons);
 
 		Scene scene = new Scene(root, 310, 350);

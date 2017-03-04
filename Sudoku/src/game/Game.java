@@ -19,7 +19,7 @@ public class Game {
 	public int getNbr(int i, int j) {
 		return board[i][j];
 	}
-
+	
 	/** Set value at the row i and column j. */
 	public void setNbr(int i, int j, int value) {
 		board[i][j] = value;
