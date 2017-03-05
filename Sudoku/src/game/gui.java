@@ -52,12 +52,15 @@ public class gui extends Application {
 				for (int i = 0; i < 9; i++) {
 					for (int j = 0; j < 9; j++) {
 						for (Node node : grid.getChildren()) {
-							Integer nodeRow = GridPane.getRowIndex(node);
-							if (i == (nodeRow == null ? 0 : nodeRow)) {
-								Integer nodeColumn = GridPane.getColumnIndex(node);
-								if (j == (nodeColumn == null ? 0 : nodeColumn)) {
+							int nodeRow = GridPane.getRowIndex(node);
+							if (i == nodeRow) {
+								int nodeColumn = GridPane.getColumnIndex(node);
+								if (j == nodeColumn) {
 									TextCell text = (TextCell) node;
-									if (!text.getText().isEmpty()) {
+									if (text.getText().isEmpty() && !sudoku.isEmpty(i, j)) {
+										sudoku.setNbr(i, j, -1);
+										text.clear();
+									} else if (!text.getText().isEmpty()) {
 										int nbr = Integer.parseInt(text.getText());
 										sudoku.setNbr(i, j, nbr);
 									}
@@ -68,20 +71,20 @@ public class gui extends Application {
 				}
 				if (sudoku.solve(0, 0)) {
 					System.out.println("YES");
-					// for(int i = 0; i < 9; i++){
-					// for(int j = 0; j < 9; j++){
-					// for (Node node : grid.getChildren()) {
-					// Integer nodeRow = GridPane.getRowIndex(node);
-					// if (i == (nodeRow == null ? 0 : nodeRow)) {
-					// Integer nodeColumn = GridPane.getColumnIndex(node);
-					// if (j == (nodeColumn == null ? 0 : nodeColumn)) {
-					// TextCell text = (TextCell) node;
-					// text.replaceText(0, 1, sudoku.getString(i, j));
-					// }
-					// }
-					// }
-					// }
-					// }
+					for (int i = 0; i < 9; i++) {
+						for (int j = 0; j < 9; j++) {
+							for (Node node : grid.getChildren()) {
+								int nodeRow = GridPane.getRowIndex(node);
+								if (i == nodeRow) {
+									int nodeColumn = GridPane.getColumnIndex(node);
+									if (j == nodeColumn) {
+										TextCell text = (TextCell) node;
+										text.setText(Integer.toString(sudoku.getNbr(i, j)));
+									}
+								}
+							}
+						}
+					}
 				} else {
 					System.out.println("NO");
 				}
@@ -89,7 +92,16 @@ public class gui extends Application {
 		});
 		clearButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				// code here
+				for (Node node : grid.getChildren()) {
+					TextCell text = (TextCell) node;
+					text.clear();
+
+				}
+				for (int i = 0; i < 9; i++) {
+					for (int j = 0; j < 9; j++) {
+						sudoku.setNbr(i, j, -1);
+					}
+				}
 			}
 		});
 		buttons.getChildren().addAll(solveButton, clearButton);
