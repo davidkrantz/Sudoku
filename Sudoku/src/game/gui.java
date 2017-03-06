@@ -89,7 +89,6 @@ public class gui extends Application {
 							}
 						}
 					}
-					Dialogs.alert("Success", null, "The sudoku was solved!");
 				} else {
 					Dialogs.alert("Fail", null, "Could not solve the sudoku.");
 				}
