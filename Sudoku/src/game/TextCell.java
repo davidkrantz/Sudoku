@@ -21,5 +21,4 @@ public class TextCell extends TextField {
 	private boolean matches(String text) {
 		return text.isEmpty() || (getText().length() < 1) && text.matches("[A-Z]") ;
 	}
-
 }

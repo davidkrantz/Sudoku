@@ -49,6 +49,7 @@ public class gui extends Application {
 		clearButton.setAlignment(Pos.CENTER);
 		solveButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
+				sudoku = new Game();
 				for (int i = 0; i < 9; i++) {
 					for (int j = 0; j < 9; j++) {
 						for (Node node : grid.getChildren()) {
@@ -56,20 +57,24 @@ public class gui extends Application {
 							if (i == nodeRow) {
 								int nodeColumn = GridPane.getColumnIndex(node);
 								if (j == nodeColumn) {
-									TextCell text = (TextCell) node;
-									if (text.getText().isEmpty() && !sudoku.isEmpty(i, j)) {
-										sudoku.setNbr(i, j, -1);
-										text.clear();
-									} else if (!text.getText().isEmpty()) {
-										int nbr = Integer.parseInt(text.getText());
-										sudoku.setNbr(i, j, nbr);
+									TextCell field = (TextCell) node;
+									String text = field.getText();
+									if (!text.isEmpty()) {
+										if (text.matches("[1-9]+")) {
+											int nbr = Integer.parseInt(text);
+											sudoku.setNbr(i, j, nbr);
+										} else {
+											Dialogs.alert("Wrong input", null,
+													"You can only input numbers from 1 to 9.");
+											return;
+										}
 									}
 								}
 							}
 						}
 					}
 				}
-				if (sudoku.solve(0, 0)) {
+				if (sudoku.solve()) {
 					System.out.println("YES");
 					for (int i = 0; i < 9; i++) {
 						for (int j = 0; j < 9; j++) {
@@ -97,11 +102,7 @@ public class gui extends Application {
 					text.clear();
 
 				}
-				for (int i = 0; i < 9; i++) {
-					for (int j = 0; j < 9; j++) {
-						sudoku.setNbr(i, j, -1);
-					}
-				}
+				sudoku = new Game();
 			}
 		});
 		buttons.getChildren().addAll(solveButton, clearButton);

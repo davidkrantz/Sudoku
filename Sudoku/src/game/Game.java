@@ -4,7 +4,9 @@ public class Game {
 	private int[][] board;
 	private boolean wrongInput;
 
-	/** Create an empty sudoku board, which is defined as a filled board with -1. */
+	/**
+	 * Create an empty sudoku board, which is defined as a filled board with -1.
+	 */
 	public Game() {
 		board = new int[9][9];
 		for (int i = 0; i < 9; i++) {
@@ -19,7 +21,7 @@ public class Game {
 	public int getNbr(int i, int j) {
 		return board[i][j];
 	}
-	
+
 	/** Set value at the row i and column j. */
 	public void setNbr(int i, int j, int value) {
 		board[i][j] = value;
@@ -30,8 +32,12 @@ public class Game {
 		return board[i][j] == -1;
 	}
 
+	public boolean solve() {
+		return solve(0, 0);
+	}
+
 	/** Checks each cell recursive and solves the sudoku. */
-	public boolean solve(int i, int j) {
+	private boolean solve(int i, int j) {
 		if (i > 8) { // om vi har nått slutet
 			return true;
 		} else if (j > 8) { // om vi är i slutet av en rad
