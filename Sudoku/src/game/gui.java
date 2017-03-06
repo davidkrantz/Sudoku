@@ -75,7 +75,6 @@ public class gui extends Application {
 					}
 				}
 				if (sudoku.solve()) {
-					System.out.println("YES");
 					for (int i = 0; i < 9; i++) {
 						for (int j = 0; j < 9; j++) {
 							for (Node node : grid.getChildren()) {
@@ -90,8 +89,9 @@ public class gui extends Application {
 							}
 						}
 					}
+					Dialogs.alert("Success", null, "The sudoku was solved!");
 				} else {
-					System.out.println("NO");
+					Dialogs.alert("Fail", null, "Could not solve the sudoku.");
 				}
 			}
 		});
